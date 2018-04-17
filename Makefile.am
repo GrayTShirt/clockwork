@@ -21,6 +21,7 @@ AM_CFLAGS += -DCW_GATHER_DIR=\"$(gatherdir)\"
 AM_CFLAGS += -DCW_CLI_DIR=\"$(clidir)\"
 AM_CFLAGS += -DCW_SYSCONF_DIR=\"$(pkgsysconfdir)\"
 AM_CFLAGS += -DPACKAGE_LIBDIR=\"$(pkglibdir)\"
+AM_CFLAGS += -I$(srcdir)/src/tools
 AM_CFLAGS += @AUGEAS_CFLAGS@
 AM_CFLAGS += @GCOV_CFLAGS@
 
@@ -81,6 +82,60 @@ CTAP_TESTS += t/69-res_exec
 CTAP_TESTS += t/70-res_symlink
 CTAP_TESTS += t/90-meshd
 
+
+TOOLS_TESTS =
+
+TOOLS_TESTS += t/tools/basex
+t_tools_basex_SOURCES = $(tools_src) t/tools/basex.c t/tools/test.h
+TOOLS_TESTS += t/tools/cache
+t_tools_cache_SOURCES = $(tools_src) t/tools/cache.c t/tools/test.h
+TOOLS_TESTS += t/tools/cert
+t_tools_cert_SOURCES = $(tools_src) t/tools/cert.c t/tools/test.h
+TOOLS_TESTS += t/tools/config
+t_tools_config_SOURCES = $(tools_src) t/tools/config.c t/tools/test.h
+TOOLS_TESTS += t/tools/ha
+t_tools_ha_SOURCES = $(tools_src) t/tools/ha.c t/tools/test.h
+TOOLS_TESTS += t/tools/hash
+t_tools_hash_SOURCES = $(tools_src) t/tools/hash.c t/tools/test.h
+TOOLS_TESTS += t/tools/hb
+t_tools_hb_SOURCES = $(tools_src) t/tools/hb.c t/tools/test.h
+TOOLS_TESTS += t/tools/list
+t_tools_list_SOURCES = $(tools_src) t/tools/list.c t/tools/test.h
+TOOLS_TESTS += t/tools/lock
+t_tools_lock_SOURCES = $(tools_src) t/tools/lock.c t/tools/test.h
+TOOLS_TESTS += t/tools/log
+t_tools_log_SOURCES = $(tools_src) t/tools/log.c t/tools/test.h
+TOOLS_TESTS += t/tools/mem
+t_tools_mem_SOURCES = $(tools_src) t/tools/mem.c t/tools/test.h
+TOOLS_TESTS += t/tools/mq
+t_tools_mq_SOURCES = $(tools_src) t/tools/mq.c t/tools/test.h
+TOOLS_TESTS += t/tools/path
+t_tools_path_SOURCES = $(tools_src) t/tools/path.c t/tools/test.h
+TOOLS_TESTS += t/tools/proc
+t_tools_proc_SOURCES = $(tools_src) t/tools/proc.c t/tools/test.h
+TOOLS_TESTS += t/tools/reactor
+t_tools_reactor_SOURCES = $(tools_src) t/tools/reactor.c t/tools/test.h
+TOOLS_TESTS += t/tools/run
+t_tools_run_SOURCES = $(tools_src) t/tools/run.c t/tools/test.h
+TOOLS_TESTS += t/tools/sha1
+t_tools_sha1_SOURCES = $(tools_src) t/tools/sha1.c t/tools/test.h
+TOOLS_TESTS += t/tools/signals
+t_tools_signals_SOURCES = $(tools_src) t/tools/signals.c t/tools/test.h
+TOOLS_TESTS += t/tools/strings
+t_tools_strings_SOURCES = $(tools_src) t/tools/strings.c t/tools/test.h
+TOOLS_TESTS += t/tools/time
+t_tools_time_SOURCES = $(tools_src) t/tools/time.c t/tools/test.h
+
+test-data:
+	rm -f t/tools/tmp/check-data-install.stamp
+	make t/tools/tmp/check-data-install.stamp
+check_DATA = t/tools/tmp/check-data-install.stamp
+t/tools/tmp/check-data-install.stamp:
+	mkdir -p t/tools/tmp
+	cp -a $(srcdir)/t/tools/data t/tools/tmp
+	find t/tools/tmp -type d ! -perm -200 -exec chmod u+w {} ';'
+	touch $@
+
 PERL_TESTS  =
 
 PERL_TESTS += t/80-pendulum.t
@@ -99,10 +154,11 @@ SHELL_TESTS += t/memcheck/22-units.t
 SHELL_TESTS += t/memcheck/31-cogd.t
 SHELL_TESTS += t/memcheck/32-clockd.t
 SHELL_TESTS += t/memcheck/33-cwtrust.t
+SHELL_TESTS += t/tools/memcheck
 
-TESTS          = $(CTAP_TESTS) $(PERL_TESTS) $(SHELL_TESTS)
-BUILT_TESTS    = $(CTAP_TESTS)
-check_PROGRAMS = $(CTAP_TESTS) TEST_cogd TEST_clockd TEST_ps TEST_lock TEST_meshd TEST_cmd TEST_pn
+TESTS          = $(CTAP_TESTS) $(TOOLS_TESTS) $(PERL_TESTS) $(SHELL_TESTS)
+BUILT_TESTS    = $(CTAP_TESTS) $(TOOLS_TESTS)
+check_PROGRAMS = $(CTAP_TESTS) $(TOOLS_TESTS) TEST_cogd TEST_clockd TEST_ps TEST_lock TEST_meshd TEST_cmd TEST_pn
 
 TEST_EXTRAS  = t/common.pm
 TEST_EXTRAS += t/cover.pn
@@ -111,7 +167,7 @@ TEST_EXTRAS += $(PERL_TESTS)
 TEST_EXTRAS += t/memcheck/verify
 TEST_EXTRAS += $(SHELL_TESTS)
 
-test_source  = t/test.h
+test_source  = $(tools_src) t/test.h
 test_source += src/opcodes.h
 test_source += src/base.h       src/base.c
 test_source += src/mesh.h       src/mesh.c
@@ -211,16 +267,17 @@ man/%.8: man/%.8.pod
 
 ############################################################
 
-tools_src  = src/tools/ strings.c  time.c  vigor.h
-tools_src += src/tools/basex.c src/tools/cache.c src/tools/cert.c
-tools_src += src/tools/config.c src/tools/daemon.c src/tools/fqdn.c
-tools_src += src/tools/ha.c src/tools/hash.c src/tools/hb.c
-tools_src += src/tools/list.c src/tools/lock.c src/tools/signals.c
-tools_src += src/tools/log.c src/tools/mem.c src/tools/mq.c
-tools_src += src/tools/path.c src/tools/proc.c src/tools/rand.c
-tools_src += src/tools/reactor.c src/tools/run.c src/tools/sha1.c
+tools_src  = src/tools/vigor.h
+tools_src += src/tools/fqdn.c  src/tools/hb.c   src/tools/config.c
+tools_src += src/tools/ha.c    src/tools/hash.c src/tools/strings.c
+tools_src += src/tools/list.c  src/tools/lock.c src/tools/signals.c
+tools_src += src/tools/log.c   src/tools/mem.c  src/tools/cache.c
+tools_src += src/tools/path.c  src/tools/proc.c src/tools/rand.c
+tools_src += src/tools/run.c   src/tools/sha1.c src/tools/reactor.c
+tools_src += src/tools/time.c  src/tools/mq.c   src/tools/daemon.c
+tools_src += src/tools/basex.c src/tools/cert.c
 
-core_src  = $(tool_src) src/clockwork.h src/base.h src/base.c
+core_src  = $(tools_src) src/clockwork.h src/base.h src/base.c
 core_src += src/opcodes.h
 core_src += src/mesh.h src/mesh.c
 core_src += src/authdb.h src/authdb.c
@@ -240,7 +297,7 @@ authtest_SOURCES    = src/authtest.c $(core_src)
 meshd_SOURCES       = src/meshd.c    $(core_src)
 
 bin_PROGRAMS        = bdfa pn cw
-bdfa_SOURCES        = src/bdfa.c src/base.h src/base.c
+bdfa_SOURCES        = src/bdfa.c src/base.h src/base.c src/tools/mem.c src/tools/log.c
 pn_SOURCES          = src/pn.c    $(core_src)
 cw_SOURCES          = src/cw.c    $(core_src) $(parser_spec_src)
 

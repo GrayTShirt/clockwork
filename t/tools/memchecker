@@ -1,0 +1,40 @@
+#!/bin/bash
+
+VG=/usr/bin/valgrind
+EFAIL=61
+
+if [[ ! -x $VG ]]; then
+	echo "SKIP: $VG not found (Valgrind not installed or otherwise unavailable)";
+	exit 77;
+fi
+
+SUPPS=$(mktemp);
+TEMPFILE=$(mktemp);
+trap "rm -f $TEMPFILE $SUPPS" INT TERM EXIT
+
+cat > $SUPPS <<EOF
+{
+	<libzmq3_socketcall_sendto>
+	Memcheck:Param
+	socketcall.sendto(msg)
+	fun:send
+	...
+}
+{
+	<libzmq3_socketcall_sendto>
+	Memcheck:Param
+	socketcall.send(msg)
+	fun:send
+	...
+}
+EOF
+
+libtool --mode=execute $VG --tool=memcheck --leak-check=full --error-exitcode=$EFAIL --suppressions=$SUPPS "$@" 2>$TEMPFILE >/dev/null
+if [[ $? == $EFAIL ]]; then
+	echo "FAIL: $@"
+	cat >&2 $TEMPFILE
+	exit 1
+else
+	echo "PASS: $@"
+	exit 0
+fi

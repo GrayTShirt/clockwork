@@ -20,7 +20,7 @@
 #ifndef T_TEST_H
 #define T_TEST_H
 
-#include <ctap.h>
+#include "ctap.h"
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>

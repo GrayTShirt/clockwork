@@ -49,10 +49,6 @@ AC_CHECK_LIB(pcre,
 	pcre_compile,,
 	AC_MSG_ERROR(Missing PCRE library))
 
-AC_CHECK_LIB(vigor,
-	time_s,,
-	AC_MSG_ERROR(Missing libvigor - see http://github.com/filefrog/libvigor))
-
 AC_CHECK_LIB(sodium,
 	crypto_box_keypair,,
 	AC_MSG_ERROR(Missing sodium encryption library))

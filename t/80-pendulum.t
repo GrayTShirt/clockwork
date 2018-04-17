@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use lib '.';
 use Test::More;
 use t::common;
 use POSIX qw/mkfifo geteuid getegid/;

@@ -1,0 +1,9 @@
+#!/bin/bash
+trap "exit" INT TERM
+SCRIPTPATH=$(cd $(dirname $0); pwd -P);
+for TEST in $(find t/tools -maxdepth 1 -type f -perm /u=x | sort); do
+	[[ "$TEST" == "t/tools/mem"        ]] && continue # oom is bad for VG
+	[[ "$TEST" == "t/tools/memcheck"   ]] && continue
+	[[ "$TEST" == "t/tools/memchecker" ]] && continue
+	$SCRIPTPATH/memchecker $TEST || exit $?
+done

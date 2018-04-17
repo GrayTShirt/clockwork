@@ -122,6 +122,27 @@ t/68-res_package
 t/69-res_exec
 t/70-res_symlink
 t/90-meshd
+t/tools/basex
+t/tools/cache
+t/tools/cert
+t/tools/config
+t/tools/ha
+t/tools/hash
+t/tools/hb
+t/tools/list
+t/tools/lock
+t/tools/log
+t/tools/mem
+t/tools/mq
+t/tools/path
+t/tools/proc
+t/tools/reactor
+t/tools/run
+t/tools/sha1
+t/tools/signals
+t/tools/strings
+t/tools/time
+t/tools/tmp/
 
 *.debhelper.log
 *.debhelper
