@@ -95,8 +95,6 @@ TOOLS_TESTS += t/tools/config
 t_tools_config_SOURCES = $(tools_src) t/tools/config.c t/tools/test.h
 TOOLS_TESTS += t/tools/hash
 t_tools_hash_SOURCES = $(tools_src) t/tools/hash.c t/tools/test.h
-TOOLS_TESTS += t/tools/hb
-t_tools_hb_SOURCES = $(tools_src) t/tools/hb.c t/tools/test.h
 TOOLS_TESTS += t/tools/list
 t_tools_list_SOURCES = $(tools_src) t/tools/list.c t/tools/test.h
 TOOLS_TESTS += t/tools/lock
@@ -266,14 +264,14 @@ man/%.8: man/%.8.pod
 ############################################################
 
 tools_src  = src/tools/vigor.h
-tools_src += src/tools/fqdn.c  src/tools/hb.c   src/tools/config.c
-tools_src += src/tools/hash.c src/tools/strings.c
+tools_src += src/tools/hash.c  src/tools/rand.c
 tools_src += src/tools/list.c  src/tools/lock.c src/tools/signals.c
 tools_src += src/tools/log.c   src/tools/mem.c  src/tools/cache.c
-tools_src += src/tools/path.c  src/tools/proc.c src/tools/rand.c
+tools_src += src/tools/path.c  src/tools/proc.c src/tools/config.c
 tools_src += src/tools/run.c   src/tools/sha1.c src/tools/reactor.c
 tools_src += src/tools/time.c  src/tools/mq.c   src/tools/daemon.c
-tools_src += src/tools/basex.c src/tools/cert.c
+tools_src += src/tools/basex.c src/tools/cert.c src/tools/strings.c
+tools_src += src/tools/fqdn.c
 
 core_src  = $(tools_src) src/clockwork.h src/base.h src/base.c
 core_src += src/opcodes.h
