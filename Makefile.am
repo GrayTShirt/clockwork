@@ -27,7 +27,7 @@ AM_CFLAGS += @GCOV_CFLAGS@
 AM_LFLAGS = --header-file --yylineno
 AM_YFLAGS = -d
 
-LDADD = -lzmq -lsodium -lpam -luuid -lvigor
+LDADD = -lzmq -lsodium -lpam -luuid
 
 ############################################################
 
@@ -211,7 +211,16 @@ man/%.8: man/%.8.pod
 
 ############################################################
 
-core_src  = src/clockwork.h src/base.h src/base.c
+tools_src  = src/tools/ strings.c  time.c  vigor.h
+tools_src += src/tools/basex.c src/tools/cache.c src/tools/cert.c
+tools_src += src/tools/config.c src/tools/daemon.c src/tools/fqdn.c
+tools_src += src/tools/ha.c src/tools/hash.c src/tools/hb.c
+tools_src += src/tools/list.c src/tools/lock.c src/tools/signals.c
+tools_src += src/tools/log.c src/tools/mem.c src/tools/mq.c
+tools_src += src/tools/path.c src/tools/proc.c src/tools/rand.c
+tools_src += src/tools/reactor.c src/tools/run.c src/tools/sha1.c
+
+core_src  = $(tool_src) src/clockwork.h src/base.h src/base.c
 core_src += src/opcodes.h
 core_src += src/mesh.h src/mesh.c
 core_src += src/authdb.h src/authdb.c
