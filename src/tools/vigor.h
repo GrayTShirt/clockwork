@@ -634,60 +634,6 @@ int reactor_go(reactor_t *r);
 
 /*
 
-    ##     ##    ###
-    ##     ##   ## ##
-    ##     ##  ##   ##
-    ######### ##     ##
-    ##     ## #########
-    ##     ## ##     ##
-    ##     ## ##     ##
-
- */
-
-#define HA_STATE_PRIMARY   1
-#define HA_STATE_STANDBY   2
-#define HA_STATE_ACTIVE    3
-#define HA_STATE_PASSIVE   4
-#define HA_MAX_STATE       4
-
-#define HA_PEER_PRIMARY    1
-#define HA_PEER_STANDBY    2
-#define HA_PEER_ACTIVE     3
-#define HA_PEER_PASSIVE    4
-#define HA_CLIENT_REQUEST  5
-#define HA_MAX_EVENT       5
-
-typedef struct {
-	int      state;
-	int      event;
-
-	int64_t  heartbeat;
-	int64_t  expiry;
-
-	void    *pub;
-	void    *sub;
-
-	pthread_t       tid;
-	pthread_mutex_t lock;
-	pthread_mutex_t exit;
-} ha_t;
-
-ha_t* ha_new(int state);
-void ha_free(ha_t *m);
-int ha_bind(ha_t *m, const char *endpoint);
-int ha_connect(ha_t *m, const char *endpoint);
-int ha_check(ha_t *m, int event);
-const char* ha_state(ha_t *m);
-const char* ha_event(ha_t *m);
-int ha_isprimary(ha_t *m);
-int ha_isstandby(ha_t *m);
-int ha_isactive(ha_t *m);
-int ha_ispassive(ha_t *m);
-int ha_startup(ha_t *m);
-void ha_shutdown(ha_t *m);
-
-/*
-
     ##     ## ########
     ##     ## ##     ##
     ##     ## ##     ##

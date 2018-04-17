@@ -93,8 +93,6 @@ TOOLS_TESTS += t/tools/cert
 t_tools_cert_SOURCES = $(tools_src) t/tools/cert.c t/tools/test.h
 TOOLS_TESTS += t/tools/config
 t_tools_config_SOURCES = $(tools_src) t/tools/config.c t/tools/test.h
-TOOLS_TESTS += t/tools/ha
-t_tools_ha_SOURCES = $(tools_src) t/tools/ha.c t/tools/test.h
 TOOLS_TESTS += t/tools/hash
 t_tools_hash_SOURCES = $(tools_src) t/tools/hash.c t/tools/test.h
 TOOLS_TESTS += t/tools/hb
@@ -269,7 +267,7 @@ man/%.8: man/%.8.pod
 
 tools_src  = src/tools/vigor.h
 tools_src += src/tools/fqdn.c  src/tools/hb.c   src/tools/config.c
-tools_src += src/tools/ha.c    src/tools/hash.c src/tools/strings.c
+tools_src += src/tools/hash.c src/tools/strings.c
 tools_src += src/tools/list.c  src/tools/lock.c src/tools/signals.c
 tools_src += src/tools/log.c   src/tools/mem.c  src/tools/cache.c
 tools_src += src/tools/path.c  src/tools/proc.c src/tools/rand.c
