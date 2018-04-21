@@ -108,7 +108,7 @@ only in instances where the source file is updated:
         command:  "/usr/bin/postmap -r /etc/postfix/some-map"
         ondemand: "yes"
     }
-    exec("regen some-map") depends on file "/etc/postfix/some-map"
+    exec("regen some-map") depends on file ("/etc/postfix/some-map")
 
 Without the B<ondemand> option, Clockwork would continually re-run
 the postmap command on every single run, regardless of whether it was
@@ -130,7 +130,7 @@ whether or not the source file has changed:
                              # this next part is WRONG!
         test:     "/usr/bin/test ! -f /etc/postfix/some-map.db"
     }
-    exec("regen some-map") depends on file "/etc/postfix/some-map"
+    exec("regen some-map") depends on file ("/etc/postfix/some-map")
 
 This B<will not> work.  When B<ondemand> and B<test> are composed
 in this manner, both conditionals ("only if notified" and "if the
@@ -153,7 +153,7 @@ behavior altogether:
         command:  "/usr/bin/postmap -r /etc/postfix/some-map"
         test:     "/usr/bin/test ! -f /etc/postfix/some-map.db -o /etc/postfix/some-map.db -ot /etc/postfix/some-map"
     }
-    exec("regen some-map") depends on file "/etc/postfix/some-map"
+    exec("regen some-map") depends on file ("/etc/postfix/some-map")
 
 That is, if the file does not already exist (-f) or, the file is
 older than (-ot) the source file, then run the regeneration exec.
