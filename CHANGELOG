@@ -5,6 +5,20 @@ origin/master
 
 
 
+3.3.1        2018-05-07                                    runtime 20150209
+
+  [ENHANCEMENTS]
+
+  - OpenRC, fix deprecated symlinks to /sbin/service.
+  - Gentoo, fix package re-caching.
+  - Move libvigor into repo, call it tools, add tests.
+
+  [BUG FIXES]
+
+  - Fixed syntax error in res_exec manpage
+
+
+
 3.3.0        2017-08-11                                    runtime 20150209
 
   [ENHANCEMENTS]
