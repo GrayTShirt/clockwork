@@ -16,6 +16,7 @@ origin/master
   [BUG FIXES]
 
   - Fixed syntax error in res_exec manpage
+  - src/tools/impl.h needs to included in DIST
 
 
 
