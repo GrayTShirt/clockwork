@@ -87,27 +87,27 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin
 AUTO_PKG=undetermined
 if test -x "/usr/bin/dpkg-query" \
 && test -x "/usr/bin/apt-get"; then
-	AUTO_PKG=debian
+	AUTO_PKG=dpkg
 
 elif test -x "/bin/rpm" \
   && test -x "/usr/bin/yum"; then
-	AUTO_PKG=redhat
+	AUTO_PKG=yum
 
 elif test -x "/usr/bin/emerge" \
   && test -x "/usr/bin/eix"; then
-	AUTO_PKG=gentoo
+	AUTO_PKG=portage
 fi
 
 AUTO_SVC=undetermined
 if test -x "/usr/sbin/invoke-rc.d" \
 && test -x "/usr/sbin/update-rc.d"; then
-	AUTO_SVC=debian
+	AUTO_SVC=svc_debian
 
 elif test -x "/sbin/chkconfig"; then
-	AUTO_SVC=redhat
+	AUTO_SVC=svc_redhat
 
 elif test -x "/sbin/rc-update"; then
-	AUTO_SVC=gentoo
+	AUTO_SVC=openrc
 fi
 
 
@@ -127,7 +127,7 @@ fi
 
 #################################################################
 
-on_debian () {
+dpkg () {
 	export DEBIAN_FRONTEND=noninteractive
 
 	case $ACTION in
@@ -177,7 +177,11 @@ on_debian () {
 		/usr/bin/apt-get update 2>&1
 		exit $?
 		;;
+	esac
+}
 
+svc_debian () {
+	case $ACTION in
 	svc-run-status)
 		NAME=$1
 		/usr/sbin/service $NAME status 2>&1
@@ -224,7 +228,7 @@ on_debian () {
 
 #################################################################
 
-on_redhat () {
+yum () {
 	case $ACTION in
 	pkg-version)
 		NAME=$1
@@ -258,7 +262,11 @@ on_redhat () {
 		/usr/bin/yum list >/dev/null 2>&1
 		exit $?
 		;;
+	esac
+}
 
+svc_redhat () {
+	case $ACTION in
 	svc-run-status)
 		NAME=$1
 		/usr/sbin/service $NAME status
@@ -300,7 +308,7 @@ on_redhat () {
 
 #################################################################
 
-on_gentoo () {
+portage () {
 	export CLEAN_DELAY=0
 
 	case $ACTION in
@@ -355,7 +363,11 @@ on_gentoo () {
 		/usr/bin/eix-sync -q
 		exit 1;
 		;;
+	esac
+}
 
+openrc () {
+	case $ACTION in
 	svc-run-status)
 		NAME=$1
 		/sbin/rc-service $NAME status
@@ -403,21 +415,11 @@ if [ "x$ACTION" = "xidentify" ]; then
 	exit 0
 fi
 
-case $SYSTYPE in
-debian)
-	on_debian "$@"
-	;;
-redhat)
-	on_redhat "$@"
-	;;
-gentoo)
-	on_gentoo "$@"
-	;;
-*)
-	# unknown flavor
+if [ "$SYSTYPE" = "undetermined" ]; then
 	exit 126
-	;;
-esac
+fi
+
+$SYSTYPE "$@"
 
 # unknown command, the on_* functions didn't exit
 exit 125
