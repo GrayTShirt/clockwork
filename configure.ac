@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.68)
 
-AC_INIT([Clockwork], [3.3.1], [bugs@d3fy.net])
+AC_INIT([Clockwork], [3.3.2], [bugs@d3fy.net])
 AC_SUBST([PACKAGE_RUNTIME],  [20150209])
 AC_SUBST([PACKAGE_PROTOCOL], [1])
 

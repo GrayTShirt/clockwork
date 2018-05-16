@@ -5,6 +5,15 @@ origin/master
 
 
 
+3.3.2        2018-05-16                                    runtime 20150209
+
+  [BUG FIXES]
+
+  - Fixed major error in cw-template-tt not reading in facts, the entire
+    stdin and facts loop had to be refactored
+
+
+
 3.3.1        2018-05-07                                    runtime 20150209
 
   [ENHANCEMENTS]

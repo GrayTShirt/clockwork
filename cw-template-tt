@@ -19,14 +19,14 @@ while (<$fh>) {
 	$template .= $_;
 }
 close $fh;
-my ($k, $v, $l);
-my $data = {map {
-	$l = $ARGV[$_];
-	$l =~ s/\r?\n//;
-	($k, $v) = split '=', $l;
-	$k =~ s/\./_/;
-	($k, $v);
-} 1..(scalar(@ARGV) - 1)};
+my ($k, $v);
+my $data = {};
+for (<STDIN>) {
+	chomp;
+	($k, $v) = split '=', $_;
+	$k =~ s/\./_/g;
+	$data->{$k} = $v;
+}
 $tt->process(\$template, $data);
 
 # vim:ft=perl
