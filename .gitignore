@@ -13,6 +13,7 @@ stamp-h?
 *.tors
 *.trs
 *.tar.gz
+*.tar.xz
 *.deb
 *.rpm
 *.tmp
